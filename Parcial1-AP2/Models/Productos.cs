@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Parcial1_AP2.Models
 {
-    public class Articulos
+    public class Productos
     {
         [Key]
         public int ProductoId { get; set; }

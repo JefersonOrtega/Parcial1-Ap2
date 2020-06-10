@@ -9,7 +9,7 @@ namespace Parcial1_AP2.DAL
 {
     public class Contexto : DbContext   
     {
-        public DbSet<Articulos> Articulos { get; set; }
+        public DbSet<Productos> Productos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
