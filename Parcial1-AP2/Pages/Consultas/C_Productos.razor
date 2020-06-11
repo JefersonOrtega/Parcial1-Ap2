@@ -10,17 +10,132 @@
         <h3>Consulta de Productos</h3>
     </div>
     <div class="card-body">
-        <select class="form-control" placeholder="Seleccione un criterio">
-            <option value="0">Descripción</option>
-            <option value="1">Existencia</option>
-            <option value="0">Costo</option>
-        </select>
+        <div class="row">
+            <div class="form-group col-4">
+                <label>Filtro: </label>
+                <select @bind="eleccion" class="form-control  col-4" placeholder="Seleccione un Filtro">
+                    <option value="0">Todo</option>
+                    <option value="1">Id</option>
+                    <option value="2">Descripción</option>
+                    <option value="3">Existencia</option>
+                    <option value="4">Costo</option>
+                </select>
+            </div>
 
-        
+            <div class="form-group">
+                <label>Criterio</label>
+                <div class="input-group">
+                    <input type="text" @bind=" criterio" class="form-control  col-6" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" @onclick="Consultar">Consultar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto Id</th>
+                <th>Descripción</th>
+                <th>Existencia</th>
+                <th>Costo</th>
+                <th>ValorInventario</th>
+            </tr> 
+        </thead>
+
+        <tbody>
+            @foreach(var item in lista)
+            {
+                <tr>
+                    <td>@item.ProductoId</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.Existencia</td>
+                    <td>@item.Costo</td>
+                    <td>@item.ValorInventario</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    </div>
+    <div class="card-footer">
+        <div class="form-group">
+            <label>Valor de Inventario</label>
+            <input type="text" readonly @bind="TotalValorInventario" class="form-control" />
+        </div>
     </div>
 </div>
 
 
 @code {
+    List<Productos> lista = new List<Productos>();
+    private string eleccion;
+    private string criterio;
+    double TotalValorInventario = 0;
 
+    protected override void OnInitialized()
+    {
+        lista = ProductosBLL.GetList(x => true);
+        ObtenerValorInventario(lista);
+    }
+
+    private void Consultar()
+    {
+        int seleccion = Convert.ToInt32(eleccion);
+
+        if (criterio.Trim().Length > 0)
+        {
+            switch (seleccion)
+            {
+                case 0:
+                    {
+                        lista = ProductosBLL.GetList(x => true);
+                        ObtenerValorInventario(lista);
+                        break;
+                    }
+                case 1: //id
+                    {
+                        int id = int.Parse(criterio);
+                        lista = ProductosBLL.GetList(p => p.ProductoId == id);
+                        ObtenerValorInventario(lista);
+                        break;
+
+                    }
+                case 2: //Descripcion
+                    {
+                        lista = ProductosBLL.GetList(p => p.Descripcion == criterio);
+                        ObtenerValorInventario(lista);
+                        break;
+                    }
+                case 3: //Existencia
+                    {
+                        int existencia = Convert.ToInt32(criterio);
+                        lista = ProductosBLL.GetList(p => p.Existencia == existencia);
+                        ObtenerValorInventario(lista);
+                        break;
+                    }
+                case 4: //Costo
+                    {
+                        double costo = Convert.ToDouble(criterio);
+                        lista = ProductosBLL.GetList(p => p.Costo == costo);
+                        ObtenerValorInventario(lista);
+                        break;
+                    }
+            }
+        }
+        else
+        {
+            lista = ProductosBLL.GetList(x => true);
+            ObtenerValorInventario(lista);
+        }
+    }
+
+    public void ObtenerValorInventario(List<Productos> listaProductos)
+    {
+        TotalValorInventario = 0;
+        foreach(var item in listaProductos)
+        {
+            TotalValorInventario += item.ValorInventario;
+        }
+    }
 }
