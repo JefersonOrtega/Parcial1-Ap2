@@ -48,7 +48,7 @@ namespace Parcial1_AP2.BLL
 
             try
             {
-                producto.ValorInventario = producto.Existencia * producto.Costo;
+                
                 contexto.Productos.Add(producto);
                 paso = contexto.SaveChanges() > 0;
             }
@@ -70,7 +70,7 @@ namespace Parcial1_AP2.BLL
 
             try
             {
-                producto.ValorInventario = producto.Existencia * producto.Costo;
+                
                 contexto.Entry(producto).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
