@@ -6,7 +6,7 @@
 @inject IToastService toast
 
 
-<EditForm Model="Producto" OnInvalidSubmit="Guardar">
+<EditForm Model="Producto" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -42,7 +42,7 @@
                     <label>Existencia</label>
                     <InputNumber @bind-Value="Producto.Existencia" class="form-control" @onfocusout="ActualizarValorInventario"/>
                     <ValidationMessage For="@(()=>Producto.Existencia)" />
-                </div>"
+                </div>
 
                 @*Costo*@
                 <div class="form-group">
@@ -63,7 +63,7 @@
         <div class="card-footer">
             <div class="form-group text-center" display: in line-block>
                 <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
-                <buttont type="submit" class="btn btn-lg btn-success">Guardar</buttont>
+                <button type="submit" class="btn btn-lg btn-success">Guardar</button>
                 <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
             </div>
         </div>
